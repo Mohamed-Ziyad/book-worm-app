@@ -3,27 +3,35 @@ import { Form, Button, Input } from 'semantic-ui-react';
 import validator from 'validator';
 import InlineError from '../messages/InlineError';
 import PropTypes from 'prop-types';
+
 export default class LoginForm extends Component {
 	state = {
 		data: { email: '', password: '' },
 		loading: false,
 		errors: {},
 	};
-	onChange = e =>
-		this.setState({
-			data: { ...this.state.data, [e.target.name]: e.target.value },
-		});
 	onSubmit = () => {
 		//validation
+
 		const errors = this.validate(this.state.data);
 		//errors:errors
 		this.setState({ errors });
 		//if nor errors then submit the data
 		if (Object.keys(errors).length === 0) {
-			//submit is a prop
+			//submit is a props
+			this.setState({ loading: true });
 			this.props.submit(this.state.data);
+			//this not works
+			//messges not work then video -2
+			//.catch(err => this.setState({ errors: err.response.data, loading:false }));
 		}
 	};
+
+	onChange = e =>
+		this.setState({
+			data: { ...this.state.data, [e.target.name]: e.target.value },
+		});
+
 	validate = data => {
 		const errors = {};
 		//validator is a plugin
@@ -32,9 +40,17 @@ export default class LoginForm extends Component {
 		return errors;
 	};
 	render() {
-		const { data, errors } = this.state;
+		const { data, errors, loading } = this.state;
 		return (
-			<Form onSubmit={this.onSubmit}>
+			<Form onSubmit={this.onSubmit} loading={loading}>
+				{/*
+				video - 2 message component
+				errors.global && (
+					<Message negative>
+						<Message.Header>Something went wrong</Message.Header>
+						<p>{errors.global}</p>
+					</Message>
+				)*/}
 				<Form.Field error={!!errors.email /**to control validator */}>
 					<label htmlFor="email">Email</label>
 					<Input

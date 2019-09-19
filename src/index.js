@@ -9,8 +9,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import rootReducer from './rootReducer';
+
+//redux store
 const store = createStore(
 	rootReducer,
+	//adding dev tool
 	composeWithDevTools(applyMiddleware(thunk)),
 );
 
